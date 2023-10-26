@@ -93,8 +93,9 @@ def log(sevirity, msg):
 def cli(ctx, **opts):
     ctx.obj = opts
     es_opts = {x: y for x, y in list(opts.items()) if x in ('timeout', 'ca_certs', 'verify_certs')}
-    auth_split = opts['http_auth'].split(':')
-    es_opts['basic_auth'] = (auth_split[0], auth_split[1])
+    if opts['http_auth']:
+        auth_split = opts['http_auth'].split(':')
+        es_opts['basic_auth'] = (auth_split[0], auth_split[1])
     
     ctx.obj['es_conn'] = Elasticsearch(opts['es_host'], **es_opts)
     if opts['delete']:
