@@ -24,9 +24,9 @@ In order to install plugin, simply run `pip install plugin-name`
 | 3.7         | V     | V     | V     | V     |
 
 ### Installation
+Clone the repository, and then from in the elasticsearch_loader directory:
 
-`pip install elasticsearch-loader`  
-_In order to add parquet support run `pip install 'elasticsearch-loader[parquet]'`_
+`python setup.py install`
 
 ### Usage
 
