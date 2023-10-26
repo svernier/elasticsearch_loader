@@ -71,7 +71,6 @@ def log(sevirity, msg):
 @click.option('--es-host', default=['http://localhost:9200'], multiple=True, envvar='ES_HOST',
               help='Elasticsearch cluster entry point. (default http://localhost:9200)')
 @click.option('--verify-certs', default=False, is_flag=True, help='Make sure we verify SSL certificates (default false)')
-@click.option('--use-ssl', default=False, is_flag=True, help='Turn on SSL (default false)')
 @click.option('--ca-certs', help='Provide a path to CA certs on disk')
 @click.option('--http-auth', help='Provide username and password for basic auth in the format of username:password')
 @click.option('--index', help='Destination index name', required=True)
@@ -93,7 +92,10 @@ def log(sevirity, msg):
 @click.pass_context
 def cli(ctx, **opts):
     ctx.obj = opts
-    es_opts = {x: y for x, y in list(opts.items()) if x in ('timeout', 'use_ssl', 'ca_certs', 'verify_certs', 'http_auth')}
+    es_opts = {x: y for x, y in list(opts.items()) if x in ('timeout', 'ca_certs', 'verify_certs')}
+    auth_split = opts['http_auth'].split(':')
+    es_opts['basic_auth'] = (auth_split[0], auth_split[1])
+    
     ctx.obj['es_conn'] = Elasticsearch(opts['es_host'], **es_opts)
     if opts['delete']:
         try:

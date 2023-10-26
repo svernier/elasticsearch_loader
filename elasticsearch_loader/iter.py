@@ -16,7 +16,6 @@ def bulk_builder(bulk, config):
             source = {x: y for x, y in list(item.items()) if x in config['keys']}
 
         body = {'_index': config['index'],
-                '_type': config['type'],
                 '_source': source}
 
         if config['id_field']:
